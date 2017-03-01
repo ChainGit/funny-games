@@ -14,6 +14,8 @@ import javax.swing.JPanel;
  *
  * 内容： 一条蛇，一次一个苹果，蛇撞到墙或者吃到自己游戏结束
  * 
+ * BUG：按键过快的话会出现BUG
+ * 
  * @author Chain
  *
  */

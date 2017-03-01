@@ -10,6 +10,8 @@ import java.util.LinkedList;
  * key和move是线程事件<br>
  * 注意两者之间的关系处理
  * 
+ * 按键存储使用队列，每个游戏周期队列只存储最后一次按键
+ * 
  * @author Chain
  *
  */
