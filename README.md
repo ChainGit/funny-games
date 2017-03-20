@@ -1,4 +1,4 @@
-# 170227_FunnyGame
+# funny-games
 
 Some classical and funny games.
 Most of them are writtern by Java.
