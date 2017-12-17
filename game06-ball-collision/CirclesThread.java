@@ -1,6 +1,7 @@
 package com.chain.test.day11;
 
 import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class CirclesThread extends Thread {
 					throw new RuntimeException(e);
 				}
 
-				Circle c = new Circle(width, height);
+				Circle c = new Circle(width, height, Main.CIRCLE_SCALE);
 				c.setWeight(Main.CIRCLE_WEIGHT);
 				c.setRadius(Main.CIRCLE_RADIUS);
 				// 保证小球不会初始时就碰撞（叠加）在一起
@@ -79,15 +80,16 @@ public class CirclesThread extends Thread {
 	private void calc() {
 		double e = 0.0d;
 		int size = circles.size();
-		System.out.printf("id\tvx\tvy\tpx\tpy\tlx\tly\n");
+		System.out.printf("id\tvx\tvy\tv\tpx\tpy\tlx\tly\n");
 		for (int i = 0; i < size; i++) {
 			Circle c = circles.get(i);
 			double vx = c.getSpeedX();
 			double vy = c.getSpeedY();
+			double v2 = pow(vx, 2) + pow(vy, 2);
 			int m = c.getWeigth();
-			System.out.printf("%d\t%.2f\t%.2f\t%.2f\t%.2f\t%d\t%d\n", i, vx, vy, c.getGatherX(), c.getGatherY(),
-					c.getLocationX(), c.getLocationY());
-			e += m * (pow(vx, 2) + pow(vy, 2)) / 2;
+			System.out.printf("%d\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%d\t%d\n", i, vx, vy, sqrt(v2), c.getGatherX(),
+					c.getGatherY(), c.getLocationX(), c.getLocationY());
+			e += m * v2 / 2;
 		}
 		System.out.printf("e: %.2f\n", e);
 		System.out.println("---------------------------");

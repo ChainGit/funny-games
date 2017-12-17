@@ -1,5 +1,6 @@
 package com.chain.test.day11;
 
+import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.acos;
 import static java.lang.Math.cos;
@@ -16,6 +17,7 @@ import static java.lang.Math.sqrt;
  */
 public class Circle {
 
+	private int scale;
 	private int width;
 	private int height;
 	private int weight;
@@ -29,35 +31,52 @@ public class Circle {
 	private double px;
 	private double py;
 
-	public Circle(int width, int height) {
-		this.width = width;
-		this.height = height;
+	public Circle(int width, int height, int scale) {
+		this.scale = scale;
+		this.width = zoomIn(width);
+		this.height = zoomIn(height);
+	}
+
+	public int zoomIn(int base) {
+		return scale * base;
+	}
+
+	private double zoomIn(double base) {
+		return scale * base;
+	}
+
+	public int zoomOut(int value) {
+		return value / scale;
+	}
+
+	public double zoomOut(double value) {
+		return value / scale;
 	}
 
 	public void setLocation(int lx, int ly) {
-		this.lx = lx;
-		this.ly = ly;
+		this.lx = zoomIn(lx);
+		this.ly = zoomIn(ly);
 	}
 
 	public void setSpeed(double vx, double vy) {
-		this.vx = vx;
-		this.vy = vy;
+		this.vx = zoomIn(vx);
+		this.vy = zoomIn(vy);
 	}
 
 	public void setWeight(int weight) {
-		this.weight = weight;
+		this.weight = zoomIn(weight);
 	}
 
 	public int getWeigth() {
-		return this.weight;
+		return zoomOut(this.weight);
 	}
 
 	public double getSpeedX() {
-		return vx;
+		return zoomOut(vx);
 	}
 
 	public double getSpeedY() {
-		return vy;
+		return zoomOut(vy);
 	}
 
 	public double getGatherX() {
@@ -69,24 +88,24 @@ public class Circle {
 	}
 
 	public void setRadius(int radius) {
-		this.radius = radius;
-		this.diameter = radius << 1;
+		this.radius = zoomIn(radius);
+		this.diameter = this.radius << 1;
 	}
 
 	public int getRadius() {
-		return this.radius;
+		return zoomOut(this.radius);
 	}
 
 	public int getDiameter() {
-		return this.diameter;
+		return zoomOut(this.diameter);
 	}
 
 	public int getLocationX() {
-		return lx;
+		return zoomOut(lx);
 	}
 
 	public int getLocationY() {
-		return ly;
+		return zoomOut(ly);
 	}
 
 	/**
@@ -100,94 +119,62 @@ public class Circle {
 		// 当X轴上碰到墙时,X轴行进方向改变
 		if (lx + vx + radius >= width) {
 			// 只有确实是在向右墙运动时才掉头，防止和collide中的调整出现冲突，以下类似
-			if (vx > 0) {
+			if (vx > 0)
 				vx *= -1;
-			} else {
-				if (abs(vx) < 1) {
-					px += vx;
-					if (abs(px) >= 1) {
-						lx += round(px);
-						px = 0;
-					}
-				} else {
-					lx += vx;
-					px = 0;
-				}
-			}
+			else
+				moveX();
 		} else if (lx + vx - radius <= 0) {
-			if (vx < 0) {
+			if (vx < 0)
 				vx *= -1;
-			} else {
-				if (abs(vx) < 1) {
-					px += vx;
-					if (abs(px) >= 1) {
-						lx += round(px);
-						px = 0;
-					}
-				} else {
-					lx += vx;
-					px = 0;
-				}
-			}
+			else
+				moveX();
 		}
 		// 没碰壁时继续前进
 		else {
-			if (abs(vx) < 1) {
-				px += vx;
-				if (abs(px) >= 1) {
-					lx += round(px);
-					px = 0;
-				}
-			} else {
-				lx += vx;
-				px = 0;
-			}
+			moveX();
 		}
 
 		// 当在Y轴上碰到墙时,Y轴行进方向改变
 		if (ly + vy + radius >= height) {
-			if (vy > 0) {
+			if (vy > 0)
 				vy *= -1;
-			} else {
-				if (abs(vy) < 1) {
-					py += vy;
-					if (abs(py) >= 1) {
-						ly += round(py);
-						py = 0;
-					}
-				} else {
-					ly += vy;
-					py = 0;
-				}
-			}
+			else
+				moveY();
 		} else if (ly + vy - radius <= 0) {
-			if (vy < 0) {
+			if (vy < 0)
 				vy *= -1;
-			} else {
-				if (abs(vy) < 1) {
-					py += vy;
-					if (abs(py) >= 1) {
-						ly += round(py);
-						py = 0;
-					}
-				} else {
-					ly += vy;
-					py = 0;
-				}
-			}
+			else
+				moveY();
 		}
 		// 没碰壁时继续前进
 		else {
-			if (abs(vy) < 1) {
-				py += vy;
-				if (abs(py) >= 1) {
-					ly += round(py);
-					py = 0;
-				}
-			} else {
-				ly += vy;
+			moveY();
+		}
+	}
+
+	private void moveX() {
+		if (abs(vx) < 1) {
+			px += vx;
+			if (abs(px) >= 1) {
+				lx += round(px);
+				px = 0;
+			}
+		} else {
+			lx += vx;
+			px = 0;
+		}
+	}
+
+	private void moveY() {
+		if (abs(vy) < 1) {
+			py += vy;
+			if (abs(py) >= 1) {
+				ly += round(py);
 				py = 0;
 			}
+		} else {
+			ly += vy;
+			py = 0;
 		}
 	}
 
@@ -242,9 +229,9 @@ public class Circle {
 
 		// ----- 第二步：第一部分：计算共同（相对）坐标系s的参数 -----
 
-		// 计算圆b圆心相对于圆a圆心的坐标
-		int sx = alx - blx;
-		int sy = aly - bly;
+		// 计算圆b圆心相对于圆a圆心的坐标（注意y轴为数学上的y轴，与计算机中的y轴相反）
+		int sx = blx - alx;
+		int sy = bly - aly;
 
 		// 计算b相对于a的速度方向和大小
 		double sz = sqrt(pow(sx, 2) + pow(sy, 2));
@@ -260,21 +247,14 @@ public class Circle {
 
 		// 两圆相交（或两圆粘连）
 		if (dn < dc - Main.ERROR_CROSS) {
-			double delta = (dc - dn) / 2;
-			double dx = delta * cos(s0);
-			double dy = delta * sin(s0);
-			// 计算ab圆心直线的斜率
-			alx += dx;
-			aly -= dy;
-			blx -= dx;
-			bly += dy;
+			double de = (dc - dn) / 2;
+			double dx = de * cos(s0);
+			double dy = de * sin(s0);
+			alx += dx * 2;
+			aly -= dy * 2;
+			blx -= dx * 2;
+			bly += dy * 2;
 		}
-
-		a.lx = alx;
-		a.ly = aly;
-
-		b.lx = blx;
-		b.ly = bly;
 
 		// ----- 第二步：第三部分：将ab的速度大小和方向由原坐标系转化为在共同坐标系s中的速度大小和方向 -----
 
@@ -313,13 +293,17 @@ public class Circle {
 		double savp = sqrt(pow(savxp, 2) + pow(savyp, 2));
 		// 碰撞后a球在s坐标系的运动方向
 		double sa0p = acos(savxp / savp);
-		if (savyp != 0)
+		if (savxp == 0 && savyp == 0)
+			sa0p = 0;
+		else if (savyp != 0)
 			sa0p *= savyp / abs(savyp);
 		// 碰撞后b球在s坐标系的合速度大小
 		double sbvp = sqrt(pow(sbvxp, 2) + pow(sbvyp, 2));
 		// 碰撞后b球在s坐标系的运动方向
 		double sb0p = acos(sbvxp / sbvp);
-		if (sbvyp != 0)
+		if (sbvxp == 0 && sbvyp == 0)
+			sb0p = 0;
+		else if (sbvyp != 0)
 			sb0p *= sbvyp / abs(sbvyp);
 
 		// ----- 第五步：将两球速度转化为原坐标系中的速度 -----
@@ -328,26 +312,40 @@ public class Circle {
 		double fva = savp;
 		// 碰撞后a球在原坐标系的运动方向
 		double fa0 = sa0p + s0;
+		if (fa0 > PI)
+			fa0 -= 2 * PI;
+		else if (fa0 <= -PI)
+			fa0 += 2 * PI;
 		// 碰撞后a球在原坐标系的合速度大小在x轴上的分量
 		double fvax = fva * cos(fa0);
-		// 碰撞后a球在原坐标系的合速度大小在y轴上的分量（注意乘-1）
+		// 碰撞后a球在原坐标系的合速度大小在y轴上的分量
 		double fvay = fva * sin(fa0) * -1;
 
 		// 碰撞后b球在原坐标系的合速度大小
 		double fvb = sbvp;
 		// 碰撞后b球在原坐标系的运动方向
 		double fb0 = sb0p + s0;
+		if (fb0 > PI)
+			fb0 -= 2 * PI;
+		else if (fb0 <= -PI)
+			fb0 += 2 * PI;
 		// 碰撞后b球在原坐标系的合速度大小在x轴上的分量
 		double fvbx = fvb * cos(fb0);
 		// 碰撞后b球在原坐标系的合速度大小在y轴上的分量
 		double fvby = fvb * sin(fb0) * -1;
 
 		// ----- 第六步：更新 -----
+
+		a.lx = alx;
+		a.ly = aly;
+
+		b.lx = blx;
+		b.ly = bly;
+
 		a.vx = fvax;
 		a.vy = fvay;
 
 		b.vx = fvbx;
 		b.vy = fvby;
 	}
-
 }

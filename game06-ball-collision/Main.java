@@ -17,6 +17,7 @@ public class Main extends JFrame {
 	protected static final int CIRCLE_RADIUS = 30;
 	protected static final int CIRCLE_DIAMETER = CIRCLE_RADIUS << 1;
 	protected static final int CIRCLE_WEIGHT = 1;
+	protected static final int CIRCLE_SCALE = 3;
 	// 球运行速度不要设置的过大，否则会出现球“陷”在墙里
 	protected static final int CIRCLE_MAX_SPEED = 3;
 	protected static final int CIRCLE_MIN_SPEED = 1;
