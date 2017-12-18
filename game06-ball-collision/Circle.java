@@ -122,6 +122,7 @@ public class Circle {
 			if (vx > 0)
 				vx *= -1;
 			else
+				// 如果不加这个方法，则球可能会一直嵌在墙里
 				moveX();
 		} else if (lx + vx - radius <= 0) {
 			if (vx < 0)
