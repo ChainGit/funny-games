@@ -83,7 +83,7 @@ public class CirclesThread extends Thread {
 	private void calc() {
 		double e = 0.0d;
 		int size = circles.size();
-		System.out.printf("id\tvx\tvy\tv\t0\tpx\tpy\tlx\tly\n");
+		System.out.printf("id\tvx\tvy\tv\tm\t0\tpx\tpy\tlx\tly\n");
 		for (int i = 0; i < size; i++) {
 			Circle c = circles.get(i);
 			double vx = c.getSpeedX();
@@ -95,7 +95,7 @@ public class CirclesThread extends Thread {
 			if (vy != 0)
 				a0 *= vy / abs(vy);
 			int m = c.getWeigth();
-			System.out.printf("%d\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%d\t%d\n", i, vx, vy, v, a0 * 180 / PI,
+			System.out.printf("%d\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%d\t%d\n", i, vx, vy, v, m, a0 * 180 / PI,
 					c.getGatherX(), c.getGatherY(), c.getLocationX(), c.getLocationY());
 			e += m * v2 / 2;
 		}
