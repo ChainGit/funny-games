@@ -13,7 +13,7 @@ public class Main extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	protected static final int CIRCLE_MAX_AMOUNT = 4;
+	protected static final int CIRCLE_MAX_AMOUNT = 10;
 	protected static final int CIRCLE_RADIUS = 30;
 	protected static final int CIRCLE_DIAMETER = CIRCLE_RADIUS << 1;
 	protected static final int CIRCLE_WEIGHT = 1;
