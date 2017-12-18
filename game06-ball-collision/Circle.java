@@ -250,9 +250,9 @@ public class Circle {
 			double de = (dc - dn) / 2;
 			double dx = de * cos(s0);
 			double dy = de * sin(s0);
-			alx += dx * 2;
+			alx -= dx * 2;
 			aly -= dy * 2;
-			blx -= dx * 2;
+			blx += dx * 2;
 			bly += dy * 2;
 		}
 
